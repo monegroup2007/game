@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #9D0A32;
+    font-family: 'Press Start 2P', sans-serif;
+    overflow: hidden;
+}
+
+.container {
+    position: relative;
+    width: 1100px; /* Tăng kích thước khung sách */
+    height: 580px; /* Tăng kích thước khung sách */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.left-page {
+    position: absolute;
+    top: 50%;
+    left: 25%;
+    transform: translate(-50%, -50%);
+    width: 40%; /* Tỉ lệ khung bên trái */
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+.rules-box {
+    width: 500px;
+    height: 300px;
+    background-color: #000;
+    border: 5px solid rgba(210, 78, 78, 255);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rules-box p {
+    color: #fff;
+    font-size: 10px;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.right-page {
+    position: absolute;
+    top: 50%;
+    left: 75%;
+    transform: translate(-50%, -50%);
+    width: 40%;
+    height: 75%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+.login-logo {
+    position: absolute;
+    top: 50px; /* Di chuyển logo lên trên khung */
+    left: 50%;
+    transform: translateX(-50%); /* Căn giữa theo chiều ngang */
+    width: 50px; /* Kích thước logo (thay đổi theo ý muốn) */
+    height: auto; /* Giữ tỷ lệ ảnh gốc */
+    z-index: 10; /* Đảm bảo logo nằm trên các phần khác */
+}
+
+.login-form {
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 3px solid #000;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.login-form label {
+    display: block;
+    font-size: 12px;
+    color: #000;
+    margin-bottom: 10px;
+}
+
+.login-form input[type="text"] {
+    width: 80%;
+    height: 30px;
+    font-size: 12px;
+    margin-bottom: 15px;
+    border: 2px solid #000;
+    border-radius: 5px;
+    text-align: center;
+    font-family: 'Press Start 2P', sans-serif;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.gender-selection {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 15px;
+}
+
+.gender-selection label {
+    font-size: 12px;
+    font-family: 'Press Start 2P', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.gender-selection input[type="radio"] {
+    margin-right: 5px;
+}
+
+.login-form button {
+    font-size: 14px;
+    font-family: 'Press Start 2P', sans-serif;
+    background-color: #ff5722;
+    border: none;
+    padding: 10px 20px;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease;
+}
+
+.login-form button:hover {
+    background-color: #d84315;
+}
