@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+ <meta name="google-site-verification" content="I0bQ8nA7NFJDwAwivh3X_QeaIhQGQA922k2clkppPC8" />
+  <title>Snake Game</title>
+<meta name="description" content="Play Snake and aim for the highest score!">
+<link rel="icon" href="logo.png" >
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #9D0A32;
+      color: white;
+      font-family: 'Press Start 2P', cursive; /* Pixel font */
+      flex-direction: column;
+    }
+    canvas {
+      border: 2px solid white;
+      background-color: #111;
+    }
+    #scoreDisplay {
+      margin-top: 10px;
+      font-size: 20px;
+    }
+    #playerName {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="playerName"></div>
+  <canvas id="gameCanvas" width="600" height="600"></canvas>
+  <div id="scoreDisplay">Score: <span id="score">0</span></div>
+  <audio id="eatSound" src="collect.mp3"></audio>
+  <audio id="gameOverSound" src="gameover.mp3"></audio>
+
+  <script>
+    // Lấy thông tin người chơi từ sessionStorage
+    const playerName = sessionStorage.getItem('playerName');
+    const playerGender = sessionStorage.getItem('playerGender');
+    document.getElementById('playerName').innerText = `Player: ${playerName}`;
+
+    // Cài đặt ban đầu cho trò chơi
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const gridSize = 20;
+    const canvasSize = 600;
+    let snake = [{ x: 200, y: 200 }]; 
+    let direction = 'RIGHT'; 
+    let food = { x: 0, y: 0 }; 
+    let score = 0; 
+    let gameInterval;
+    let speed = 100;  
+    let speedIncrement = 150; 
+
+    function generateFood() {
+      food.x = Math.floor(Math.random() * (canvasSize / gridSize)) * gridSize;
+      food.y = Math.floor(Math.random() * (canvasSize / gridSize)) * gridSize;
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = 0; i < snake.length; i++) {
+        ctx.fillStyle = i === 0 ? 'green' : 'lime';
+        ctx.fillRect(snake[i].x, snake[i].y, gridSize, gridSize);
+      }
+
+      ctx.fillStyle = 'red';
+      ctx.fillRect(food.x, food.y, gridSize, gridSize);
+
+      document.getElementById('score').innerText = score;
+    }
+
+    function updateGame() {
+      let newHead = { ...snake[0] };
+
+      if (direction === 'RIGHT') newHead.x += gridSize;
+      if (direction === 'LEFT') newHead.x -= gridSize;
+      if (direction === 'UP') newHead.y -= gridSize;
+      if (direction === 'DOWN') newHead.y += gridSize;
+
+      if (newHead.x < 0 || newHead.x >= canvasSize || newHead.y < 0 || newHead.y >= canvasSize || snake.some(segment => segment.x === newHead.x && segment.y === newHead.y)) {
+        clearInterval(gameInterval);
+        document.getElementById('gameOverSound').play();
+        alert('Game Over! Your final score is: ' + score);
+        
+        // Lưu điểm số và chuyển đến trang bảng xếp hạng
+        saveScore();
+        window.location.href = 'xephang2.html';  // Chuyển đến trang bảng xếp hạng
+        return;
+      }
+
+      snake.unshift(newHead);
+
+      if (newHead.x === food.x && newHead.y === food.y) {
+        score += 10;
+        generateFood();
+        document.getElementById('eatSound').play();
+
+        if (score >= speedIncrement) {
+          speedIncrement += 150;
+          if (speed > 50) { 
+            speed -= 10;
+            clearInterval(gameInterval);
+            gameInterval = setInterval(updateGame, speed); 
+          }
+        }
+      } else {
+        snake.pop();
+      }
+
+      draw();
+    }
+
+    function changeDirection(event) {
+      if (event.key === 'ArrowUp' && direction !== 'DOWN') direction = 'UP';
+      if (event.key === 'ArrowDown' && direction !== 'UP') direction = 'DOWN';
+      if (event.key === 'ArrowLeft' && direction !== 'RIGHT') direction = 'LEFT';
+      if (event.key === 'ArrowRight' && direction !== 'LEFT') direction = 'RIGHT';
+    }
+
+    function startGame() {
+      generateFood();
+      gameInterval = setInterval(updateGame, speed);
+      document.addEventListener('keydown', changeDirection);
+    }
+
+    startGame();
+
+    // Lưu điểm số và thông tin người chơi vào localStorage khi game kết thúc
+    function saveScore() {
+      const playerName = sessionStorage.getItem('playerName');
+      const playerGender = sessionStorage.getItem('playerGender');
+      const finalScore = score;
+
+      let leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
+      leaderboard.push({ name: playerName, gender: playerGender, score: finalScore });
+
+      leaderboard.sort((a, b) => b.score - a.score);
+
+      localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+    }
+  </script>
+</body>
+</html>
