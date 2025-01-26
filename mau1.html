@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+ <meta name="google-site-verification" content="I0bQ8nA7NFJDwAwivh3X_QeaIhQGQA922k2clkppPC8" />
+    <title>Login - Snake Game</title>
+<meta name="description" content="Login to play the Snake game and compete for high scores!">
+
+    <link rel="stylesheet" href="mau1.css">
+</head>
+<body>
+    <div class="container">
+        <img class="background" src="frame.png" alt="Background">
+
+        <div class="left-page">
+            <div class="rules-box">
+                <marquee behavior="scroll" direction="up" scrollamount="3">
+                    <p style="font-family:courier;">Luật đặt tên:</p>
+                    <p style="font-family:courier;">- Tên phải có ít nhất 4 ký tự.</p>
+                    <p style="font-family:courier;">- Không chứa ký tự đặc biệt (!, @, #,...).</p>
+                    <p style="font-family:courier;">- Chỉ sử dụng chữ và số.</p>
+                    <p style="font-family:courier;">- Tên phải bắt đầu bằng chữ cái.</p>
+                    <p style="font-family:courier;">- Tên của người chơi chỉ có một không trùng với tên người chơi khác.</p>
+                    <p style="font-family:courier;">Cách chơi:</p>
+                    <p style="font-family:courier;">Mục tiêu: Điều khiển con rắn di chuyển trên màn hình để ăn các mảnh thức ăn (thường là hình vuông màu đỏ) xuất hiện ngẫu nhiên. Mỗi lần ăn được thức ăn, con rắn sẽ dài ra và điểm số tăng lên.<br>
+
+Điều khiển: Người chơi điều khiển con rắn bằng các phím mũi tên (lên, xuống, trái, phải). Con rắn sẽ tiếp tục di chuyển trong hướng đã chọn cho đến khi người chơi thay đổi hướng.<br>
+
+Mất game: Người chơi sẽ thua nếu con rắn va vào tường hoặc tự cắn vào thân mình.<br>
+
+Tăng độ khó: Khi con rắn ăn thức ăn và dài ra cứ cách 150 điểm thì trò chơi trở nên khó hơn vì không gian di chuyển sẽ giảm dần.<br>
+Khi chơi xong sẽ xuất hiện một bảng xếp hạng cho người chơi biết nếu muốn quay về trang chủ thì bấm nút "HOME" còn muốn chơi lại thì bấm nút "Bach to game".
+</p>
+                </marquee>
+            </div>
+        </div>
+
+        <div class="right-page">
+            <img src="logo.png" alt="Logo" class="login-logo">
+            <div class="login-form">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter your name" required>
+
+                <div class="gender-selection">
+                    <label>
+                        <input type="radio" name="gender" value="female"> 
+                        <span>♀ Female</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="gender" value="male"> 
+                        <span>♂ Male</span>
+                    </label>
+                </div>
+
+                <!-- Nút bấm để chuyển đến trang 2 -->
+                <button onclick="goToGame()">Login</button>
+
+                <script>
+                    function goToGame() {
+                        // Lấy thông tin người chơi từ các ô nhập liệu
+                        const username = document.getElementById('username').value.trim();
+                        const gender = document.querySelector('input[name="gender"]:checked').value;
+
+                        // Kiểm tra nếu tên không hợp lệ
+                        const nameRegex = /^[a-zA-Z][a-zA-Z0-9]*$/; // Tên bắt đầu bằng chữ cái và chỉ chứa chữ số và chữ cái
+                        if (username.length < 4 || !nameRegex.test(username)) {
+                            alert("Tên không hợp lệ. Vui lòng kiểm tra lại.");
+                            return;
+                        }
+
+                        // Kiểm tra xem tên người chơi có trùng với tên đã đăng nhập chưa
+                        const leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
+                        const existingPlayer = leaderboard.find(player => player.name === username);
+                        if (existingPlayer) {
+                            alert("Tên người chơi này đã tồn tại. Vui lòng chọn tên khác.");
+                            return;
+                        }
+
+                        // Lưu thông tin người chơi vào sessionStorage
+                        sessionStorage.setItem('playerName', username);
+                        sessionStorage.setItem('playerGender', gender);
+
+                        // Chuyển hướng đến trang game
+                        window.location.href = 'mau2.html'; // Thay thế bằng trang game của bạn
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
