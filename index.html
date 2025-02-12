@@ -669,10 +669,15 @@ img {
       lastScrollY = window.scrollY;
     });
 
-fetch("https://api.countapi.xyz/update/monegroup2007-game/pageviews/?amount=1")
-    .then(res => res.json())
+fetch('https://api.allorigins.win/get?url=https://api.countapi.xyz/hit/monegroup2007.github.io/game')
+    .then(response => response.json())
     .then(data => {
-      document.getElementById("counter").textContent = data.value;
+      const parsedData = JSON.parse(data.contents);
+      document.getElementById('counter').textContent = parsedData.value;
+    })
+    .catch(error => {
+      console.error('Lỗi:', error);
+      document.getElementById('counter').textContent = 'Lỗi!';
     });
     
     // Đánh dấu tab được chọn ///
