@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MONEGROUP2007</title>
+  <link rel="icon" href="logo.png" >
+  <style>
+    body {
+      margin: 0;
+      font-family: "Press Start 2P", sans-serif;
+      background-color: #d9c293;
+      color: #000;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .pixel-border {
+      width: 90%;
+      height: 80px;
+      background: #8b1c1c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 20px 0;
+      border: 4px solid #c54c4c;
+      box-shadow: 2px 2px 0px #000;
+    }
+
+    .pixel-border img {
+      height: 70px;
+      width: auto;
+    }
+
+    .game-section {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .game-cards {
+      display: flex;
+      gap: 20px;
+      padding: 40px;
+      transition: transform 0.5s ease;
+      flex-wrap: nowrap; /* Không cho xuống dòng */
+  width: 120%; /* Mở rộng chiều rộng hơn 100% */
+    }
+
+.game-cards1 {
+    display: flex;
+    flex-wrap: wrap; /* Cho phép xuống hàng */
+    gap: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: transform 0.3s ease;
+    justify-content: center;
+}
+
+    .card {
+      width: 150px;
+      height: 200px;
+      background: #f9e3a3;
+      border: 4px solid #c54c4c;
+      border-radius: 8px;
+      box-shadow: 2px 2px 0px #000;
+      transform-style: preserve-3d;
+      transition: transform 0.6s;
+    }
+
+    .card:hover {
+      transform: rotateY(180deg);
+    }
+
+    .card-content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+    }
+
+    .front, .back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .front {
+      background: #f9e3a3;
+      color: #000;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .back {
+      background: #c54c4c;
+      color: #fff;
+      transform: rotateY(180deg);
+      font-size: 12px;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .pixel-button {
+      display: inline-block;
+      text-align: center;
+      text-decoration: none;
+      font-family: "Press Start 2P", sans-serif;
+      font-size: 14px;
+      color: #fff;
+      background-color: #8b1c1c; /* Màu đỏ của nút */
+      padding: 10px 20px;
+      border: 4px solid #c54c4c; /* Viền đậm hơn */
+      box-shadow: 4px 4px 0px #000; /* Hiệu ứng đổ bóng */
+      border-radius: 8px; /* Góc bo tròn */
+      transition: all 0.2s ease;
+      margin-top: 10px;
+    }
+
+    .pixel-button:hover {
+      background-color: #c54c4c; /* Màu thay đổi khi hover */
+      color: #f9e3a3; /* Màu chữ thay đổi khi hover */
+      box-shadow: 6px 6px 0px #000; /* Đổ bóng sâu hơn */
+      transform: translate(-2px, -2px); /* Hiệu ứng nhấn nổi */
+    }
+
+    .scroll-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #8b1c1c;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .scroll-button:hover {
+      background: #c54c4c;
+    }
+
+    .scroll-left {
+      left: 10px;
+    }
+
+    .scroll-right {
+      right: 10px;
+    }
+
+    /* Thanh điều hướng pixel ở cuối trang */
+    .bottom-nav {
+      position: fixed;
+      bottom: -100px; /* Ẩn thanh điều hướng ban đầu */
+      left: 0;
+      width: 100%;
+      background: #f9e3a3;
+      color: #fff;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 0;
+      font-family: "Press Start 2P", sans-serif;
+      transition: bottom 0.3s ease;
+      border-top: 4px solid #c54c4c;
+      box-shadow: 0 -4px 0px #8b1c1c;
+    }
+
+    .bottom-nav.show {
+      bottom: 0; /* Hiển thị khi cuộn xuống */
+    }
+
+    .bottom-nav .tab {
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease;
+      background: #8b1c1c;
+      border: 2px solid #c54c4c;
+      box-shadow: 2px 2px 0px #000;
+      color: #f9e3a3;
+    }
+
+    .bottom-nav .tab:hover,
+    .bottom-nav .tab.active {
+      background: #f9e3a3;
+      color: #8b1c1c;
+      border-color: #8b1c1c;
+    }
+
+    /* Phong cách cho profile */
+    .profile-section {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .profile-section.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .profile-card {
+      margin: 50px auto;
+      padding: 20px;
+      max-width: 600px;
+      background: #f9e3a3;
+      border: 4px solid #c54c4c;
+      box-shadow: 4px 4px 0px #8b1c1c;
+      border-radius: 12px;
+      font-family: "Press Start 2P", sans-serif;
+      text-align: center;
+    }
+
+    .profile-card img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+
+    .profile-card h1 {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+
+    .profile-card p {
+      font-size: 14px;
+    }
+    /* Profile section */
+    .profile-section1 {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      flex-wrap: wrap;
+      margin: 40px 0;
+      gap: 20px;
+    }
+
+    .profile1 {
+      width: 150px;
+      text-align: center;
+      border: 4px solid #8b1c1c;
+      border-radius: 8px;
+      background-color: #f9e3a3;
+      padding: 20px;
+      box-shadow: 2px 2px 0px #000;
+      transition: transform 0.3s ease, background-color 0.3s;
+    }
+
+    .profile1:hover {
+      transform: translateY(-10px);
+      background-color: #c54c4c;
+      color: #fff;
+    }
+
+    .profile1 img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+
+    .profile1 h3 {
+      font-size: 14px;
+      margin: 5px 0;
+    }
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+     
+  
+  <div class="container">
+    <div class="pixel-border">
+      <img src="element1.gif" alt="Pixel GIF">
+    </div>
+
+    <div class="profile-section" id="profileSection">
+      <div class="profile-card">
+        <img src="logo.png" alt="Profile Picture">
+        <h1>GROUP1</h1>
+        <p>@monegroup2007</p>
+        <p>HERE ARE OUR GAMES<br>Have fun playing and don't forget to leave us a comment if you have any questions.</p>
+        <p style="font-family: Montserrat">Số lượt truy cập: <span id="counter">Loading...</span></p>
+
+  
+
+      </div>
+    </div>
+
+
+<!-- Profile Section -->
+    <div id="profile1" class="profile-section1">
+      <div class="profile1">
+        <img src="tn.png" alt="Profile 1">
+        <h3>Member 1</h3>
+        <p>NAME: THAI NGUYEN </p>
+      </div>
+      <div class="profile1">
+        <img src="pn.png" alt="Profile 2">
+        <h3>Member 2</h3>
+        <p>NAME: PHUONG NHI</p>
+      </div>
+      <div class="profile1">
+        <img src="dt.png" alt="Profile 3">
+        <h3>Member 3</h3>
+        <p>NAME: DUY THANG</p>
+      </div>
+      <div class="profile1">
+        <img src="mt.png" alt="Profile 4">
+        <h3>Member 4</h3>
+        <p>NAME: MINH TUE</p>
+      </div>
+    </div>
+  </div>
+
+</header>
+    <p style="text-align: center;">TOP GAMES</p>
+    <div class="game-section">
+      <button class="scroll-button scroll-left" onclick="scrollGames('left')">&#9664;</button>
+      <div class="game-cards">
+        <div class="card">
+          <div class="card-content">
+            <div class="front">2048</div>
+            <div class="back">
+              <img src="2048.png" alt="2048game">
+              <a href="https://play2048.co/" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <div class="front">900719925<br>4740992</div>
+            <div class="back">
+              <img src="game.png" alt="game2">
+              <a href="https://games-site.github.io/projects/9007199254740992/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <div class="front">AGES OF CONFLICT</div>
+            <div class="back">
+             <img src="game3.png" alt="game3">
+             <a href="https://games-site.github.io/projects/ages-of-conflict/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <div class="front">AMONG US</div>
+            <div class="back">
+              <img src="game4.png" alt="game4">
+              <a href="https://games-site.github.io/projects/among-us/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <div class="front">A SMALL<br> WORLD CUP</div>
+            <div class="back">
+              <img src="game5.png" alt="game5">
+              <a href="https://games-site.github.io/projects/a-small-world-cup/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <div class="front">1v1.LOL</div>
+            <div class="back">
+              <img src="game6.png" alt="game6">
+              <a href="https://games-site.github.io/projects/1v1.lol/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <div class="front">BALL-SORT-PUZZLE</div>
+            <div class="back">
+              <img src="game7.png" alt="game7">
+              <a href="https://games-site.github.io/projects/ball-sort-puzzle/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <div class="front">BASKET AND BALL</div>
+            <div class="back">
+              <img src="game8.png" alt="game8">
+              <a href="https://games-site.github.io/projects/basket-and-ball/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+      <div class="card">
+          <div class="card-content">
+            <div class="front">BLACKJACK</div>
+            <div class="back">
+              <img src="game9.png" alt="game9">
+              <a href="https://games-site.github.io/projects/blackjack/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+      <div class="card">
+          <div class="card-content">
+            <div class="front">BLOCK THE PIG</div>
+            <div class="back">
+              <img src="game10.png" alt="game10">
+              <a href="https://games-site.github.io/projects/block-the-pig/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="scroll-button scroll-right" onclick="scrollGames('right')">&#9654;</button>
+    </div>
+    
+
+    <p style="text-align: center;">ALL GAMES</p>
+      <div class="game-cards1">
+        <div class="card">
+          <div class="card-content">
+            <div class="front">2048</div>
+            <div class="back">
+              <img src="2048.png" alt="2048game">
+              <a href="https://play2048.co/" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <div class="front">900719925<br>4740992</div>
+            <div class="back">
+              <img src="game.png" alt="game2">
+              <a href="https://games-site.github.io/projects/9007199254740992/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <div class="front">AGES<br>OF<br>CONFLICT</div>
+            <div class="back">
+             <img src="game3.png" alt="game3">
+             <a href="https://games-site.github.io/projects/ages-of-conflict/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <div class="front">AMONG<br>US</div>
+            <div class="back">
+              <img src="game4.png" alt="game4">
+              <a href="https://games-site.github.io/projects/among-us/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <div class="front">A SMALL<br> WORLD CUP</div>
+            <div class="back">
+              <img src="game5.png" alt="game5">
+              <a href="https://games-site.github.io/projects/a-small-world-cup/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <div class="front">1v1.LOL</div>
+            <div class="back">
+              <img src="game6.png" alt="game6">
+              <a href="https://games-site.github.io/projects/1v1.lol/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <div class="front">BALL<br>SORT<br>PUZZLE</div>
+            <div class="back">
+              <img src="game7.png" alt="game7">
+              <a href="https://games-site.github.io/projects/ball-sort-puzzle/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <div class="front">BASKET<br>AND<br>BALL</div>
+            <div class="back">
+              <img src="game8.png" alt="game8">
+              <a href="https://games-site.github.io/projects/basket-and-ball/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+      <div class="card">
+          <div class="card-content">
+            <div class="front">BLACKJACK</div>
+            <div class="back">
+              <img src="game9.png" alt="game9">
+              <a href="https://games-site.github.io/projects/blackjack/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+      <div class="card">
+          <div class="card-content">
+            <div class="front">BLOCK<br>THE<br>PIG</div>
+            <div class="back">
+              <img src="game10.png" alt="game10">
+              <a href="https://games-site.github.io/projects/block-the-pig/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <div class="front">CELL<br>MACHINE</div>
+            <div class="back">
+              <img src="game11.png" alt="game11">
+              <a href="https://games-site.github.io/projects/cell-machine/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <div class="front">CHROME<br>DINO</div>
+            <div class="back">
+              <img src="game12.png" alt="game12">
+              <a href="https://games-site.github.io/projects/chrome-dino/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <div class="front">CIRCLO</div>
+            <div class="back">
+              <img src="game13.png" alt="game13">
+              <a href="https://games-site.github.io/projects/circlo/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <div class="front">COOKIE<br>CLICKER</div>
+            <div class="back">
+              <img src="game14.png" alt="game14">
+              <a href="https://games-site.github.io/projects/cookie-clicker/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <div class="front">CORE<br>BALL</div>
+            <div class="back">
+              <img src="game15.png" alt="game15">
+              <a href="https://games-site.github.io/projects/core-ball/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <div class="front">CUT<br>THE<br>ROPE</div>
+            <div class="back">
+              <img src="game16.png" alt="game16">
+              <a href="https://games-site.github.io/projects/ctr-time-travel/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <div class="front">DEATH<br>RUN<br>3D</div>
+            <div class="back">
+              <img src="game17.png" alt="game17">
+              <a href="https://games-site.github.io/projects/death-run-3d/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <div class="front">DOODLE<br>JUMP</div>
+            <div class="back">
+              <img src="game18.png" alt="game18">
+              <a href="https://games-site.github.io/projects/doodle-jump/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+      <div class="card">
+          <div class="card-content">
+            <div class="front">DRIFT<br>BOSS</div>
+            <div class="back">
+              <img src="game19.png" alt="game19">
+              <a href="https://games-site.github.io/projects/drift-boss/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+      <div class="card">
+          <div class="card-content">
+            <div class="front">DRIFT<br>HUNTERS</div>
+            <div class="back">
+              <img src="game20.png" alt="game20">
+              <a href="https://games-site.github.io/projects/drift-hunters/index.html" class="pixel-button">GO</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+ <p style="text-align: center;">REMAINING GAMES ARE BEING UPDATED<BR>*<BR>*<BR>*</p>
+
+  <div class="bottom-nav" id="bottomNav">
+    <div class="tab" onclick="window.location.href='mau5.html'">Home</div>
+    <div class="tab" onclick="window.location.href='mau6.html'">Introduce</div>
+    <div class="tab" onclick="window.location.href='mau7.html'">About Web</div>
+  </div>
+
+  <script>
+    function scrollGames(direction) {
+      const container = document.querySelector('.game-cards');
+      const scrollAmount = 200;
+      const currentTransform = getComputedStyle(container).transform;
+      const matrixValues = currentTransform.match(/matrix.*\((.+)\)/);
+      const currentX = matrixValues ? parseFloat(matrixValues[1].split(', ')[4]) : 0;
+
+      if (direction === 'left') {
+        container.style.transform = `translateX(${currentX + scrollAmount}px)`;
+      } else if (direction === 'right') {
+        container.style.transform = `translateX(${currentX - scrollAmount}px)`;
+      }
+    }
+
+    // Hiện thanh điều hướng khi cuộn xuống
+    let lastScrollY = window.scrollY;
+    const bottomNav = document.getElementById('bottomNav');
+    const profileSection = document.getElementById('profileSection');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > lastScrollY) {
+        bottomNav.classList.add('show');
+      } else {
+        bottomNav.classList.remove('show');
+      }
+
+      // Hiệu ứng xuất hiện dần cho profile
+      const profileTop = profileSection.getBoundingClientRect().top;
+      const windowHeight = window.innerHeight;
+      if (profileTop < windowHeight - 100) {
+        profileSection.classList.add('show');
+      }
+
+      lastScrollY = window.scrollY;
+    });
+
+fetch("https://api.countapi.xyz/update/monegroup2007-game/pageviews/?amount=1")
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById("counter").textContent = data.value;
+    });
+    
+    // Đánh dấu tab được chọn ///
+    function selectTab(selectedTab) {
+      document.querySelectorAll('.bottom-nav .tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      selectedTab.classList.add('active');
+    }
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>INTRODUCE</title>
+  <link rel="icon" href="logo.png" >
+  <style>
+    body {
+      margin: 0;
+      font-family: "Press Start 2P", sans-serif;
+      background-color: #d9c293;
+      color: #000;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .pixel-border {
+      width: 90%;
+      height: 80px;
+      background: #8b1c1c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 20px 0;
+      border: 4px solid #c54c4c;
+      box-shadow: 2px 2px 0px #000;
+    }
+
+    .profile-section {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .profile-section.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .profile-card {
+      margin: 50px auto;
+      padding: 20px;
+      max-width: 600px;
+      background: #f9e3a3;
+      border: 4px solid #c54c4c;
+      box-shadow: 4px 4px 0px #8b1c1c;
+      border-radius: 12px;
+      font-family: "Press Start 2P", sans-serif;
+      text-align: center;
+    }
+
+    .profile-card img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+
+    .profile-card h1 {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+
+    .profile-card p {
+      font-size: 14px;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      width: 80%;
+      margin: 40px auto;
+    }
+
+    .team-member {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .team-member:hover {
+      transform: translateY(-10px);
+    }
+
+    .team-member img {
+      width: 200px;
+      height: 200px;
+      border: 4px solid #c54c4c;
+      border-radius: 8px;
+      box-shadow: 2px 2px 0px #000;
+    }
+
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      background: #f9e3a3;
+      border: 4px solid #c54c4c;
+      border-radius: 12px;
+      box-shadow: 4px 4px 0px #8b1c1c;
+      padding: 20px;
+      z-index: 1000;
+      transition: transform 0.3s ease;
+      text-align: center;
+      width: 80%;
+      max-width: 400px;
+    }
+
+    .popup.show {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .popup h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .popup p {
+      font-size: 14px;
+    }
+
+    .popup .close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #c54c4c;
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .popup .close:hover {
+      background: #8b1c1c;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: -100px; /* Hidden by default */
+      left: 0;
+      width: 100%;
+      background: #f9e3a3;
+      color: #fff;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 0;
+      font-family: "Press Start 2P", sans-serif;
+      transition: bottom 0.3s ease;
+      border-top: 4px solid #c54c4c;
+      box-shadow: 0 -4px 0px #8b1c1c;
+    }
+
+    .bottom-nav.show {
+      bottom: 0; /* Show when scrolling down */
+    }
+
+    .bottom-nav .tab {
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease;
+      background: #8b1c1c;
+      border: 2px solid #c54c4c;
+      box-shadow: 2px 2px 0px #000;
+      color: #f9e3a3;
+    }
+
+    .bottom-nav .tab:hover,
+    .bottom-nav .tab.active {
+      background: #f9e3a3;
+      color: #8b1c1c;
+      border-color: #8b1c1c;
+    }
+
+.montserrat-<uniquifier> {
+  font-family: "Montserrat", serif;
+  font-optical-sizing: auto;
+  font-weight: 900;
+  font-style: normal;
+}
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <div class="pixel-border" style=" color: white;">Welcome to Our Team</div>
+
+    <div class="profile-grid">
+      <div class="team-member" onclick="showPopup('Pham Thai Nguyen', 'Responsible for building code and tags.')">
+        <img src="tn.png" alt="John Doe">
+        <p> Thai Nguyen</p>
+      </div>
+      <div class="team-member" onclick="showPopup('Tran Le Phuong Nhi', 'Responsible for building the framework and layout of the website.')">
+        <img src="pn.png" alt="Jane Smith">
+        <p> Phuong Nhi</p>
+      </div>
+      <div class="team-member" onclick="showPopup('Tran Duy Thang', 'Responsible for building images and providing links to games.')">
+        <img src="dt.png" alt="Alice Brown">
+        <p> Duy Thang</p>
+      </div>
+      <div class="team-member" onclick="showPopup('Nguyen Ngoc Minh Tue', 'Responsible for developing content and arranging components.')">
+        <img src="mt.png" alt="Bob Johnson">
+        <p> Minh Tue</p>
+      </div>
+    </div>
+
+    <div class="popup" id="profilePopup">
+      <button class="close" onclick="hidePopup()">X</button>
+      <h2 id="popupName">Name</h2>
+      <p id="popupDescription">Description</p>
+    </div>
+
+    <div class="bottom-nav" id="bottomNav">
+      <div class="tab" onclick="window.location.href='mau5.html'">Home</div>
+    <div class="tab" onclick="window.location.href='mau6.html'">Introduce</div>
+    <div class="tab" onclick="window.location.href='mau7.html'">About Web</div>
+    </div>
+  </div>
+    <p class="montserrat" style="text-align: center;"> ***INTRODUCE: MONEGROUP2007***  </p>
+    <p style="font-family: monospace; text-align: center;">
+ Đây là một dự án thành lập web dựa trên 4 thành viên sinh năm 2007 của trường THPT chuyên Quốc Học-Huế, lớp 12 Toán 2. Với chủ đề tự chọn: "Giải trí". <br>
+ Chúng tôi là một nhóm gồm bốn thành viên trẻ tuổi, năng động và đam mê sáng tạo, cùng hợp tác trong dự án xây dựng một trang web độc đáo với chủ đề "Giải trí". Mỗi thành viên mang một cá tính riêng biệt, nhưng tất cả đều chia sẻ chung một mục tiêu: tạo ra một nền tảng trực tuyến nơi mọi người có thể thư giãn, tận hưởng và tìm thấy niềm vui sau những giờ phút căng thẳng trong cuộc sống.<br>
+
+### **Nguồn cảm hứng**  <br>
+ Cuộc sống hiện đại với nhịp độ nhanh đôi khi khiến chúng ta cảm thấy áp lực và mệt mỏi. Trong khi đó, giải trí luôn là một phần quan trọng giúp cân bằng cảm xúc, kích thích sự sáng tạo và tái tạo năng lượng. Nhóm chúng tôi nhận thấy rằng không phải ai cũng có cơ hội tìm kiếm những phút giây thư giãn chất lượng, và đó là lý do chúng tôi quyết định tạo ra một không gian trực tuyến giúp người dùng dễ dàng tiếp cận các nội dung giải trí.  <br>
+
+ Ngoài ra, việc xây dựng trang web này cũng là cơ hội để nhóm thử nghiệm khả năng thiết kế, lập trình và làm việc nhóm trong lĩnh vực công nghệ. Chúng tôi tin rằng, thông qua dự án này, không chỉ người dùng được tận hưởng thành quả mà chính chúng tôi cũng học được rất nhiều điều quý giá.<br>
+
+### **Ý nghĩa khi chọn chủ đề "Giải trí"**  <br>
+ Chủ đề "Giải trí" không chỉ đơn thuần là mang đến sự vui vẻ, mà còn mang một thông điệp lớn hơn: "Hãy yêu bản thân, dành thời gian để thư giãn và tận hưởng cuộc sống." Chúng tôi muốn khuyến khích mọi người nhìn nhận lại tầm quan trọng của những khoảnh khắc thư giãn, để sống tích cực hơn và gắn kết với nhau thông qua những trải nghiệm thú vị trên trang web của chúng tôi.<br>
+
+ Hơn nữa, khi làm việc với chủ đề này, nhóm hy vọng có thể khơi gợi nụ cười và cảm giác hạnh phúc nơi người dùng. Đó chính là động lực mạnh mẽ nhất để chúng tôi tiếp tục nỗ lực và sáng tạo mỗi ngày.<br>
+
+### **Hoạt động**  <br>
+ Chúng tôi thực hiện trang web này với mục tiêu chính làm cho bài thực hành ở trường do giáo viên đề ra song việc ở giai đoạn cuối cấp sẽ trì trệ chúng tôi rất nhiều nhưng trang web sẽ được giữ nguyên các mẫu và sẽ mất thời gian cho việc cập nhật.<br>
+### **Định hướng phát triển**  <br>
+ Trang web sẽ bao gồm nhiều yếu tố như mini-game, các hiệu ứng đồ họa pixel độc đáo, và một giao diện thân thiện, vui tươi. Đây sẽ là nơi không chỉ để giải trí mà còn để kết nối, giúp mọi người thư giãn theo cách riêng của mình.  <br>
+
+ Bằng cả tâm huyết và sự cống hiến, nhóm chúng tôi mong rằng trang web sẽ là một món quà nhỏ nhưng ý nghĩa cho mọi người. Chúng tôi tin rằng niềm vui luôn là món quà quý giá nhất mà công nghệ và sáng tạo có thể mang lại!</p>
+ <p style="font-family: monospace; text-align: center; color: red;">### **Lời cảm ơn**  <br>
+  We would like to thank everyone for their support and a special thanks to our large supplier<br>
+ // all games playable on this website are complete copyright & property of their respective owners \\<br>
+*<br> *<br> *<br>*</p>
+
+  <script>
+    function showPopup(name, description) {
+      const popup = document.getElementById('profilePopup');
+      document.getElementById('popupName').textContent = name;
+      document.getElementById('popupDescription').textContent = description;
+      popup.classList.add('show');
+    }
+
+    function hidePopup() {
+      const popup = document.getElementById('profilePopup');
+      popup.classList.remove('show');
+    }
+
+    // Show bottom navigation on scroll
+    let lastScrollY = window.scrollY;
+    const bottomNav = document.getElementById('bottomNav');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > lastScrollY) {
+        bottomNav.classList.add('show');
+      } else {
+        bottomNav.classList.remove('show');
+      }
+      lastScrollY = window.scrollY;
+    });
+
+    // Highlight active tab
+    function selectTab(selectedTab) {
+      document.querySelectorAll('.bottom-nav .tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      selectedTab.classList.add('active');
+    }
+  </script>
+</body>
+</html>
