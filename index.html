@@ -689,15 +689,29 @@ img {
     }
 
 
-  async function updateCounter() {
-    const namespace = "monegroup2007.github.io";
-const key = "game_page";
-    const url = `https://api.countapi.xyz/hit/${namespace}/${key}`;
+  const binId = "67ad8ea7acd3cb34a8e0133c"; // Thay bằng ID JSONbin của bạn
+  const apiKey = ""; // Nếu bin công khai, để trống
 
+  async function updateCounter() {
     try {
-      const response = await fetch(url);
-      const data = await response.json();
-      document.getElementById("visit-counter").textContent = `Lượt truy cập: ${data.value}`;
+      // Lấy số lượt truy cập hiện tại
+      let response = await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`);
+      let data = await response.json();
+      let visits = data.record.visits || 0;
+
+      // Cập nhật số lượt truy cập
+      visits += 1;
+      await fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          ...(apiKey && { "X-Master-Key": apiKey }), // Chỉ thêm API Key nếu bin riêng tư
+        },
+        body: JSON.stringify({ visits }),
+      });
+
+      // Hiển thị số lượt truy cập
+      document.getElementById("visit-counter").textContent = `Lượt truy cập: ${visits}`;
     } catch (error) {
       console.error("Lỗi khi lấy dữ liệu:", error);
       document.getElementById("visit-counter").textContent = "Không thể lấy dữ liệu!";
@@ -705,6 +719,7 @@ const key = "game_page";
   }
 
   updateCounter();
+
 
 
 </script>
