@@ -689,35 +689,24 @@ img {
     }
 
 
-  async function fetchAnalyticsData() {
-    const propertyId = "478004736"; // Thay bằng ID thuộc tính của bạn
-    const apiKey = "G-382CVKXCZ3"; // Thay bằng API Key bạn đã tạo
+  async function updateCounter() {
+    const namespace = "monegroup2007.github.io";
+const key = "game_page";
+    const url = `https://api.countapi.xyz/hit/${namespace}/${key}`;
 
-    const response = await fetch(
-      `https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport?key=${apiKey}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
-          metrics: [{ name: "activeUsers" }],
-        }),
-      }
-    );
-
-    const data = await response.json();
-    if (data && data.rows) {
-      document.getElementById("visit-counter").textContent =
-        `Lượt truy cập: ${data.rows[0].metricValues[0].value}`;
-    } else {
-      document.getElementById("visit-counter").textContent =
-        "Không thể lấy dữ liệu!";
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      document.getElementById("visit-counter").textContent = `Lượt truy cập: ${data.value}`;
+    } catch (error) {
+      console.error("Lỗi khi lấy dữ liệu:", error);
+      document.getElementById("visit-counter").textContent = "Không thể lấy dữ liệu!";
     }
   }
 
-  fetchAnalyticsData();
+  updateCounter();
+
+
 </script>
 
 
