@@ -689,7 +689,7 @@ img {
     }
 
 
-  const binId = "67ad8ea7acd3cb34a8e0133c"; // Thay bằng ID JSONbin của bạn
+  const binId = "67ad90c6acd3cb34a8e015f3"; // Thay bằng ID JSONbin của bạn
   const apiKey = ""; // Nếu bin công khai, để trống
 
   async function updateCounter() {
@@ -705,7 +705,7 @@ img {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          ...(apiKey && { "G-382CVKXCZ3": apiKey }), // Chỉ thêm API Key nếu bin riêng tư
+          ...(apiKey && { "X-Master-Key": apiKey }), // Chỉ thêm API Key nếu bin riêng tư
         },
         body: JSON.stringify({ visits }),
       });
