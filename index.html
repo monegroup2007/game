@@ -307,8 +307,6 @@ img {
         <h1>GROUP1</h1>
         <p>@monegroup2007</p>
         <p>HERE ARE OUR GAMES<br>Have fun playing and don't forget to leave us a comment if you have any questions.</p>
-        <p style="font-family: Montserrat">Số lượt truy cập: <span id="counter">Loading...</span></p>
-
   
 
       </div>
@@ -632,7 +630,7 @@ img {
     <div class="tab" onclick="window.location.href='mau7.html'">About Web</div>
   </div>
 
-  <script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-382CVKXCZ3">
     function scrollGames(direction) {
       const container = document.querySelector('.game-cards');
       const scrollAmount = 200;
@@ -669,16 +667,14 @@ img {
       lastScrollY = window.scrollY;
     });
 
-fetch('https://api.allorigins.win/get?url=https://api.countapi.xyz/hit/monegroup2007.github.io/game')
-    .then(response => response.json())
-    .then(data => {
-      const parsedData = JSON.parse(data.contents);
-      document.getElementById('counter').textContent = parsedData.value;
-    })
-    .catch(error => {
-      console.error('Lỗi:', error);
-      document.getElementById('counter').textContent = 'Lỗi!';
-    });
+<!-- Google tag (gtag.js) -->
+
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-382CVKXCZ3');
+
     
     // Đánh dấu tab được chọn ///
     function selectTab(selectedTab) {
