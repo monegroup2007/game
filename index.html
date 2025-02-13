@@ -689,28 +689,28 @@ img {
     }
 
 
-  const binId = "67ad90c6acd3cb34a8e015f3"; // Thay bằng ID JSONbin của bạn
-  const apiKey = ""; // Nếu bin công khai, để trống
+ const binId = "67ad90c6acd3cb34a8e015f3"; // Thay bằng ID JSONbin của bạn
 
   async function updateCounter() {
     try {
-      // Lấy số lượt truy cập hiện tại
+      // Gửi yêu cầu lấy số lượt truy cập
       let response = await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`);
       let data = await response.json();
       let visits = data.record.visits || 0;
 
-      // Cập nhật số lượt truy cập
+      // Tăng số lượt truy cập
       visits += 1;
+
+      // Gửi yêu cầu cập nhật số lượt truy cập
       await fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json",
-          ...(apiKey && { "X-Master-Key": apiKey }), // Chỉ thêm API Key nếu bin riêng tư
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({ visits }),
       });
 
-      // Hiển thị số lượt truy cập
+      // Hiển thị số lượt truy cập trên trang
       document.getElementById("visit-counter").textContent = `Lượt truy cập: ${visits}`;
     } catch (error) {
       console.error("Lỗi khi lấy dữ liệu:", error);
@@ -719,7 +719,6 @@ img {
   }
 
   updateCounter();
-
 
 
 </script>
